@@ -23,8 +23,8 @@ def test_retriever_returns_top_ranked_chunks(tmp_path: Path) -> None:
     doc_id = store.upsert_document("Pride and Prejudice", "data/book.pdf")
 
     chunks = [
-        Chunk(chunk_index=0, text="Elizabeth Bennet appears.", word_count=3),
-        Chunk(chunk_index=1, text="Mr Darcy appears.", word_count=3),
+        Chunk(chunk_index=0, text="Elizabeth Bennet appears.", word_count=3, token_count=5),
+        Chunk(chunk_index=1, text="Mr Darcy appears.", word_count=3, token_count=4),
     ]
     vectors = [[1.0, 0.0], [0.0, 1.0]]
     store.replace_document_chunks(doc_id, chunks, vectors)
