@@ -12,7 +12,7 @@ class Settings:
     openai_api_key: str
     openai_embedding_model: str
     openai_chat_model: str
-    chunk_max_words: int
+    chunk_max_tokens: int
     retrieval_top_k: int
     min_retrieval_score: float
     db_path: Path
@@ -53,7 +53,7 @@ def load_settings() -> Settings:
         openai_api_key=_require_str("OPENAI_API_KEY"),
         openai_embedding_model=os.getenv("OPENAI_EMBEDDING_MODEL", "text-embedding-3-small").strip(),
         openai_chat_model=os.getenv("OPENAI_CHAT_MODEL", "gpt-4o-mini").strip(),
-        chunk_max_words=_parse_int("CHUNK_MAX_WORDS", 300),
+        chunk_max_tokens=_parse_int("CHUNK_MAX_TOKENS", 800),
         retrieval_top_k=_parse_int("RETRIEVAL_TOP_K", 5),
         min_retrieval_score=_parse_float("MIN_RETRIEVAL_SCORE", 0.2),
         db_path=Path(os.getenv("DB_PATH", "storage/rag.db")).expanduser(),
@@ -62,8 +62,8 @@ def load_settings() -> Settings:
 
     if settings.retrieval_top_k < 1:
         raise ValueError("RETRIEVAL_TOP_K must be >= 1")
-    if settings.chunk_max_words < 1:
-        raise ValueError("CHUNK_MAX_WORDS must be >= 1")
+    if settings.chunk_max_tokens < 1:
+        raise ValueError("CHUNK_MAX_TOKENS must be >= 1")
     if settings.min_retrieval_score < -1.0 or settings.min_retrieval_score > 1.0:
         raise ValueError("MIN_RETRIEVAL_SCORE must be between -1 and 1")
 

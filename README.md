@@ -5,7 +5,7 @@ CLI Retrieval-Augmented Generation (RAG) system for a single Jane Austen book PD
 ## Features
 
 - PDF ingestion to normalized text
-- Paragraph-aware chunking with max chunk size (`CHUNK_MAX_WORDS`, default 300)
+- Sentence-aware chunking with max chunk size (`CHUNK_MAX_TOKENS`, default 800)
 - OpenAI embeddings for chunk and query vectors
 - SQLite persistence for documents, chunks, and vectors
 - Cosine similarity retrieval (`top-k`)

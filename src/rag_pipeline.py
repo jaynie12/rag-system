@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from src.chunker import chunk_text_by_paragraphs
+from src.chunker import chunk_text_by_sentences
 from src.config import Settings
 from src.embeddings import EmbeddingClient
 from src.generator import AnswerGenerator
@@ -28,7 +28,7 @@ class RAGPipeline:
 
     def build_index(self, pdf_path: Path, title: str | None = None) -> int:
         text = load_document_text(pdf_path)
-        chunks = chunk_text_by_paragraphs(text, max_words=self.settings.chunk_max_words)
+        chunks = chunk_text_by_sentences(text, max_tokens=self.settings.chunk_max_tokens)
         vectors = self.embedding_client.embed_texts([chunk.text for chunk in chunks])
 
         document_title = title or pdf_path.stem
