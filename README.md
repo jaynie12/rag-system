@@ -1,4 +1,4 @@
-# rag-system
+# rag-system MVP
 
 CLI Retrieval-Augmented Generation (RAG) system for a single Jane Austen book PDF.
 
