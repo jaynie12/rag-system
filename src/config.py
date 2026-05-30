@@ -15,6 +15,7 @@ class Settings:
     chunk_max_tokens: int
     retrieval_top_k: int
     min_retrieval_score: float
+    pii_guardrails_enabled: bool
     db_path: Path
     data_dir: Path
 
@@ -37,6 +38,18 @@ def _parse_int(name: str, default: int) -> int:
     return value
 
 
+def _parse_bool(name: str, default: bool) -> bool:
+    raw = os.getenv(name)
+    if raw is None:
+        return default
+    value = raw.strip().lower()
+    if value in {"1", "true", "yes", "on"}:
+        return True
+    if value in {"0", "false", "no", "off"}:
+        return False
+    raise ValueError(f"{name} must be a boolean (true/false), got: {raw}")
+
+
 def _parse_float(name: str, default: float) -> float:
     raw = os.getenv(name, str(default)).strip()
     try:
@@ -56,6 +69,7 @@ def load_settings() -> Settings:
         chunk_max_tokens=_parse_int("CHUNK_MAX_TOKENS", 800),
         retrieval_top_k=_parse_int("RETRIEVAL_TOP_K", 5),
         min_retrieval_score=_parse_float("MIN_RETRIEVAL_SCORE", 0.2),
+        pii_guardrails_enabled=_parse_bool("PII_GUARDRAILS_ENABLED", True),
         db_path=Path(os.getenv("DB_PATH", "storage/rag.db")).expanduser(),
         data_dir=Path(os.getenv("DATA_DIR", "data")).expanduser(),
     )

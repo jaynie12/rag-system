@@ -27,10 +27,25 @@ Retrieval:
 
 - I care about the meaning not the distance between them so Cosine similarity is being used
 
-Question generation technique's:
+## User Guardrails
 
-- Query Expansion: Expands the query by adding synonyms, related terms, or domain-specific keywords to improve recall.
-- Query Reformulation: Rewrites the query using LLM-based paraphrasing to improve structure and clarity.
+`ask` questions are scanned for structured PII **before** retrieval or LLM calls, using LangChain [`PIIMiddleware`](https://docs.langchain.com/oss/python/langchain/guardrails) with `strategy="block"`.
+
+**Blocked categories:** email, credit card, IP address, MAC address, URL, API keys/tokens, phone numbers, UK postcodes, US-style addresses, and US SSN-style IDs.
+
+**Allowed:** book-style questions with character names (e.g. `Who is Elizabeth?`) — generic person names are not blocked.
+
+**Rejected example:**
+
+```text
+Question rejected: detected email. Remove personal or sensitive data and try again.
+```
+
+Matched sensitive text is never echoed in the error message.
+
+Set `PII_GUARDRAILS_ENABLED=false` in `.env` to disable guardrails locally (default: `true`).
+
+**Limitations:** regex/heuristic detection can produce false positives or miss edge cases; only user-typed `ask` input is checked, not indexed book content.
 
 ## Project Structure
 
@@ -54,10 +69,13 @@ rag-system/
 │   ├── pdfToMd.py
 │   ├── rag_pipeline.py
 │   ├── retriever.py
+│   ├── user_guardrails.py
 │   └── vector_store.py
 └── tests/
     ├── test_chunker.py
-    └── test_retriever.py
+    ├── test_pdf_to_md.py
+    ├── test_retriever.py
+    └── test_user_guardrails.py
 ```
 
 ## Setup
@@ -70,6 +88,7 @@ rag-system/
 3. Copy `.env.example` to `.env` and set your OpenAI key:
    - `OPENAI_API_KEY`
    - optional model/threshold settings
+   - `PII_GUARDRAILS_ENABLED` (default `true`)
 4. Put your Jane Austen PDF into `data/`.
 
 ## CLI Usage
@@ -97,8 +116,3 @@ python -m src.cli ask "Who insults Elizabeth at the dance?" --verbose
 ```bash
 pytest
 ```
-
-## Notes
-
-- MVP scope intentionally excludes query expansion and optimization.
-- This project is designed for local non-production use.

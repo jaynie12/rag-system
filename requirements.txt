@@ -4,3 +4,4 @@ pypdf
 numpy
 pytest
 tiktoken
+langchain

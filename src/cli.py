@@ -4,8 +4,11 @@ import argparse
 from pathlib import Path
 import sys
 
+from langchain.agents.middleware import PIIDetectionError
+
 from src.config import load_settings
 from src.rag_pipeline import RAGPipeline
+from src.user_guardrails import format_pii_rejection_message, validate_user_question
 
 
 def _build_parser() -> argparse.ArgumentParser:
@@ -48,6 +51,15 @@ def main(argv: list[str] | None = None) -> int:
         question = args.question.strip()
         if not question:
             print("Question cannot be empty.")
+            return 1
+
+        try:
+            validate_user_question(
+                question,
+                enabled=settings.pii_guardrails_enabled,
+            )
+        except PIIDetectionError as exc:
+            print(format_pii_rejection_message(exc))
             return 1
 
         try:
