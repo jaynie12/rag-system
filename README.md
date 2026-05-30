@@ -29,23 +29,10 @@ Retrieval:
 
 ## User Guardrails
 
-`ask` questions are scanned for structured PII **before** retrieval or LLM calls, using LangChain [`PIIMiddleware`](https://docs.langchain.com/oss/python/langchain/guardrails) with `strategy="block"`.
+`ask` questions are scanned for structured PII **before** retrieval or LLM calls, using LangChain email, credit card, IP address, MAC address, URL, API keys/tokens, phone numbers, UK postcodes, US-style addresses, and US SSN-style IDs.
 
-**Blocked categories:** email, credit card, IP address, MAC address, URL, API keys/tokens, phone numbers, UK postcodes, US-style addresses, and US SSN-style IDs.
 
-**Allowed:** book-style questions with character names (e.g. `Who is Elizabeth?`) — generic person names are not blocked.
 
-**Rejected example:**
-
-```text
-Question rejected: detected email. Remove personal or sensitive data and try again.
-```
-
-Matched sensitive text is never echoed in the error message.
-
-Set `PII_GUARDRAILS_ENABLED=false` in `.env` to disable guardrails locally (default: `true`).
-
-**Limitations:** regex/heuristic detection can produce false positives or miss edge cases; only user-typed `ask` input is checked, not indexed book content.
 
 ## Project Structure
 
