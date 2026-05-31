@@ -4,6 +4,9 @@ CLI Retrieval-Augmented Generation (RAG) system for a single Jane Austen book PD
 
 # Design
 
+
+# Design
+
 **Chucking strategy**
 
 - A combination of size limit and paragraph, keep going until you reach a paragraph, but if the next paragraph will split, then stop
@@ -42,7 +45,11 @@ Design decision:
 - Then for large scale usage and to allow for multiple documents being stored I would use vespa because if the retrieval process also becomes multi-layered with Cross - Encoder models, this database can handle this and has low latency
 
 Retrieval:
-Choose Cosine similarity
+
+| Method | Pros | Cons |
+| --- | --- | --- |
+|  |  |  |
+|  |  |  |
 
 TradeOff: Prioritised Semantic meaning over exact matching terms as the questions being asked won’t always be in the language of the documents. 
 
