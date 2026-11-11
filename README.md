@@ -34,11 +34,6 @@ CLI Retrieval-Augmented Generation (RAG) system for a single Jane Austen book PD
 
 ## Retrieval
 
-| Method | Pros | Cons |
-|---------|---------|---------|
-|  |  |  |
-|  |  |  |
-
 **TradeOff:** Prioritised Semantic meaning over exact matching terms as the questions being asked won’t always be in the language of the documents.
 
 # Tables required
